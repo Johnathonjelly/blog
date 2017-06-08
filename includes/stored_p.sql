@@ -22,6 +22,7 @@ IN active BIT
  INSERT INTO events(title, body, imgRef, active) VALUES (
    title,
    body,
+   tags,
    img,
    active
  );
@@ -29,7 +30,9 @@ IN active BIT
 END;
 
 DROP PROCEDURE IF EXISTS sp_addTags(
-
+  IN tagA VARCHAR(90),
+  IN tagB VARCHAR(90),
+  IN tagC VARCHAR(90)
 )
 
 DROP PROCEDURE IF EXISTS sp_getActivePosts;
@@ -67,43 +70,43 @@ CREATE PROCEDURE sp_updateEvent(
   WHERE eventID = eventIDs;
 END;
 
-DROP PROCEDURE IF EXISTS sp_updateTime;
-CREATE PROCEDURE sp_updateTime(
-  IN eventTimes DATETIME,
-  IN eventIDs INT(11)
+DROP PROCEDURE IF EXISTS sp_updateTags;
+CREATE PROCEDURE sp_updateTags(
+  IN tagIDs INT(11),
+  IN tags VARCHAR(175)
 )BEGIN
-  UPDATE times
-  SET eventTime = eventTimes
-  WHERE eventID = eventIDs;
+  UPDATE tags
+  SET tags = tags
+  WHERE tagID = tagIDs;
 END;
 
-DROP PROCEDURE IF EXISTS sp_deleteEvent;
+DROP PROCEDURE IF EXISTS sp_deletePost;
 CREATE PROCEDURE sp_deleteEvent(
-  IN eventIDs INT(11)
+  IN blogID INT(11)
 )BEGIN
-DELETE FROM events
-WHERE eventID = eventIDs;
+DELETE FROM posts
+WHERE postID = blogID;
 END;
 
 DROP PROCEDURE IF EXISTS sp_getActive;
 CREATE PROCEDURE sp_getActive(
-  IN year CHAR(4),
-  IN month VARCHAR(2),
-  IN day VARCHAR(2)
 )BEGIN
-SELECT eventTime, title, description, url, location
-FROM times JOIN events ON times.eventID = events.eventID
-WHERE YEAR(times.eventTime) = year AND
-MONTH(times.eventTime) = month AND
-DAY(times.eventTime) = day AND events.active = 1
-ORDER BY times.eventTime ASC;
+SELECT  title, body
+FROM posts 
+WHERE posts.active = 1
+ORDER BY timestamp ASC;
 END;
 
-DROP PROCEDURE IF EXISTS sp_getEventForUpdate;
+DROP PROCEDURE IF EXISTS sp_getTags(
+  IN tagIDs,
+  IN blogIDs
+)
+
+DROP PROCEDURE IF EXISTS sp_getPostForUpdate;
 CREATE PROCEDURE sp_getEventForUpdate(
-  IN eventIDs INT(11)
+  IN blogID INT(11)
 )BEGIN
-SELECT title, description, url, location, active, eventTime, events.eventID
+SELECT title, body, active, imgRef, tags, postsID
 FROM times JOIN events ON times.eventID = events.eventID
 WHERE events.eventID = eventIDs;
 END;

@@ -1,5 +1,8 @@
 <?php 
     $title = 'Home';
-    require_once('head.php');
-    require_once('foot.php');
+    include 'includes/head.php';
+?>
+<p>hello world</p>
+<?php 
+    include 'includes/foot.php';
 ?>

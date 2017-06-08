@@ -10,7 +10,7 @@ if (isset($_POST['didSubmit'])) {
     }
     if (count($msgs) === 0) {
         require_once('includes/dbconn.php');
-        $connect = new Connection;
+        $connect = new DBConnection;
         $connection = $connect->getConnection();
         $sql = $connection->prepare('CALL sp_login(?, ?)');
         $sql->execute(array($un, $pwd));
@@ -26,7 +26,7 @@ if (isset($_POST['didSubmit'])) {
     }
 }
 $title = 'Login';
-require_once('head.php');
+include 'includes/head.php';
 ?>
 <div class="wrapper">
     <form class="login" action="<?=$_SERVER["SCRIPT_NAME"]?>" method="post">
@@ -66,5 +66,6 @@ require_once('head.php');
         </fieldset>
       </form>
     </div>
-  </body>
-</html>
+<?php 
+include 'includes/foot.php';
+?>
