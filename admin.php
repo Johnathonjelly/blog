@@ -20,6 +20,9 @@ if (isset($_POST['didSubmit'])) {
   $blogTags = isset($_POST['tags']) ? $_POST['tags'] : '';
   $blogActive = isset($_POST['active']) ? $_POST['active'] : '';
   $blogIMG =  isset($_POST['imgRef']) ? $_POST['imgRef'] : '';
+
+  explode($blogTags)
+
  
 
 
@@ -36,7 +39,7 @@ if (isset($_POST['didSubmit'])) {
       $connect = new DBConnection;
       $connection = $connect->getConnection();
       $sql = $connection->prepare('CALL sp_addPost(?, ?, ?, ?, ?)');
-      $sql->execute(array($blogTitle, $blogDescription, $blogTags, $blogActive, $blogIMG));
+      $sql->execute(array($blogTitle, $blogDescription, $blogActive, $blogIMG));
       $results = $sql->fetch();
       $postID = $results['postID'];
     }
@@ -76,22 +79,22 @@ if (isset($_POST['didSubmit'])) {
     </thead>
     <tbody>
 
-    <?php
+    <!--PHPTAG->
     //append all events to a table
-    $connect = new DBConnection;
-    $connection = $connect->getConnection();
-    $sql = $connection->prepare('CALL sp_getAllPosts()');
-    $sql->execute();
-    $results = $sql->fetchAll();
+    // $connect = new DBConnection;
+    // $connection = $connect->getConnection();
+    // $sql = $connection->prepare('CALL sp_getAllPosts()');
+    // $sql->execute();
+    // $results = $sql->fetchAll();
 //sanatize all data
-    foreach ($results as $info) {
-    $blogTitles = htmlentities(isset($info["title"]) ? $info["title"] : "");
-      echo "<tr><td>{$eventTitles}</td>
-      <td>{$timeStamp}</td>
-      <td>{$eventActiveORNot}</td>
-      <td><a href='update.php?blogID={$info['blogID']}'>Update</a> ||
-      <a href='delete.php?blogID={$info['blogID']}'>Delete</a></td></tr>";
-    }
+    // foreach ($results as $info) {
+    // $blogTitles = htmlentities(isset($info["title"]) ? $info["title"] : "");
+    //   echo "<tr><td>{$eventTitles}</td>
+    //   <td>{$timeStamp}</td>
+    //   <td>{$eventActiveORNot}</td>
+    //   <td><a href='update.php?blogID={$info['blogID']}'>Update</a> ||
+    //   <a href='delete.php?blogID={$info['blogID']}'>Delete</a></td></tr>";
+    // }
      ?>
    </tbody>
 </table>

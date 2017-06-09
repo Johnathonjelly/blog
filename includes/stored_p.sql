@@ -97,10 +97,37 @@ WHERE posts.active = 1
 ORDER BY timestamp ASC;
 END;
 
-DROP PROCEDURE IF EXISTS sp_getTags(
+
+
+DROP PROCEDURE IF EXISTS sp_addTag;
+CREATE PROCEDURE sp_addTag(
+  IN newTag VARCHAR(75),
+  IN newPostID INT(11)
+)
+BEGIN
+  DECLARE newTagID INT(11);
+  IF (SELECT COUNT(*) FROM tags WHERE tags.tag = newTag) = 0 THEN
+    INSERT INTO tags (tag) VALUES (newTag);
+  END IF;
+	SET newTagID = (SELECT tagID FROM tags WHERE tags.tag = newTag LIMIT 1);
+  IF (SELECT COUNT(*) FROM postsTags WHERE postsTags.postID = newPostID AND postsTags.tagID = newTagID) = 0 THEN 
+    INSERT INTO postsTags (postID, tagID) VALUES (newPostID, newTagID);
+  END IF;
+  SELECT newTagID;
+END;
+
+DROP PROCEDURE IF EXISTS sp_getTags;
+CREATE PRODCEDURE sp_getTags(
   IN tagIDs,
   IN blogIDs
-)
+)BEGIN
+SELECT tags
+FROM tags
+JOIN postTags ON tags.tagID = postTags.tagIDfk
+JOIN posts ON posts.postID = postTags.postIDfk 
+WHERE 
+ORDER BY
+END;
 
 DROP PROCEDURE IF EXISTS sp_getPostForUpdate;
 CREATE PROCEDURE sp_getEventForUpdate(
