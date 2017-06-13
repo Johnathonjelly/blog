@@ -13,7 +13,7 @@ session_start();
     ?>
     <script>
     window.setTimeout( () => {
-        window.location = 'home.php';
+        window.location = 'index.php';
       }, 2100);
     </script>
     <div>

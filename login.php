@@ -10,24 +10,44 @@ if (isset($_POST['didSubmit'])) {
     }
     if (count($msgs) === 0) {
         require_once('includes/dbconn.php');
-        $connect = new DBConnection;
+        $connect = new Connection;
         $connection = $connect->getConnection();
         $sql = $connection->prepare('CALL sp_login(?, ?)');
         $sql->execute(array($un, $pwd));
         $results = $sql->fetch();
+        
         if ($results === false) {
             $msgs[] = 'Wrong username or password';
-        } else {
+        } elseif ($results['admin'] == 0) {
             $_SESSION['uid'] = $results['userID'];
-
             $msgs[] = "Success! UserID = {$_SESSION['uid']} ";
-            header('Location: index.php');
+           
+            if (headers_sent()) {
+                die("Redirect failed. Please click on this link: <a href=index.php>Home</a>");
+                } else {
+                    exit(header("Location: index.php"));
+                }
+        } elseif ($results['admin'] == 1) {
+            $_SESSION['uid'] = $results['userID'];
+            $_SESSION['admin'] = $results['admin'];
+                if (headers_sent()) {
+                    die("Redirect failed. Please click on this link: <a href=admin.php>Admin</a>");
+                } else {
+                    exit(header("Location: admin.php"));
+                }
         }
     }
 }
-$title = 'Login';
-include 'includes/head.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+</head>
+<body>
 <div class="wrapper">
     <form class="login" action="<?=$_SERVER["SCRIPT_NAME"]?>" method="post">
     <fieldset>
@@ -42,18 +62,18 @@ include 'includes/head.php';
     }
 ?>
         <dl>
-        <dt>
-        <label for="username">Username</label>
-        </dt>
-        <dd>
-        <input type="text" id="username" name="username" placeholder="Username" value="<?=htmlentities($un);?>" autofocus="autofocus">
-        </dd>
-        <dt>
-        <label for="password">Password</label>
-        </dt>
-        <dd>
-        <input type="password" id="password" name="password" placeholder="Password">
-        </dd>
+            <dt>
+                <label for="username">Username</label>
+            </dt>
+            <dd>
+                <input type="text" id="username" name="userName" placeholder="Username" value="<?=htmlentities($un);?>" autofocus="autofocus">
+            </dd>
+            <dt>
+                <label for="password">Password</label>
+            </dt>
+            <dd>
+                <input type="password" id="password" name="password" placeholder="Password">
+            </dd>
         </dl>
         <button type="submit" name="submit">Submit</button>
         <input type="hidden" name="didSubmit" value="1">
