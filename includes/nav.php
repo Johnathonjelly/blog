@@ -1,5 +1,5 @@
- <nav>
-    <ul>
+ <nav class='nav'>
+    <ul class='ul-nav'>
         <li><a href="index.php">Home</a></li>
         <li><a href="login.php">Login</a></li>
         <li><a href="register.php">Register</a></li>

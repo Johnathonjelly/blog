@@ -2,6 +2,7 @@
 session_start();
  ?>
 <!DOCTYPE html>
+<link rel="stylesheet" href="css/master.css">
 <html>
   <head>
     <meta charset="utf-8">

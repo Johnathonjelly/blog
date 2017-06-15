@@ -1,0 +1,49 @@
+.hidden {
+    display: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/*utility class*/ 
+.box {
+    border: 2px solid black;
+}
+
+/************************
+******Layout Styles*******
+**************************/
+body {
+    background-color: honeydew;
+    max-width: 75vw;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.intro-title {
+    align-self: flex-end;
+}
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.posts-list {
+    padding-left: 55px;
+}
+.top-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*****************************
+******End Layout Styles*******
+******************************/
